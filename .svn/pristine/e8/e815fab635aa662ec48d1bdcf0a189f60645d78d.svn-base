@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.dao.SearchDAO">
+	<select id="execSelect" resultType="com.spring.vo.SearchVO">
+		select hno, hname, ano, hlist, mlist, mprice, guest, pthumbnail, hcomment from hall order by bcount asc 
+	</select> 
+	
+	<select id="getArea" resultType="com.spring.vo.AreaVO">
+		select distinct 
+		<if test='param1 == null and param2 == null'>	
+			city from (select avg(ano) ano, city from area group by city) where ano != 0 order by ano
+		</if>
+		<if test='param1 != null and param1.equals("city")'>
+			gu from 
+			(select ano, gu from area where city=#{param2})
+			order by gu		
+		</if>		
+	</select>	
+	
+	<select id="execSelectArea" resultType="int">
+		select ano from area where city=#{city} and gu=#{gu}
+	</select>
+	
+	<select id ="execSelectHall" resultType="com.spring.vo.SearchVO">
+		SELECT a.city, a.gu, h.hno,h.hname,h.hlist,h.mlist,h.mprice,h.guest,h.pthumbnail, h.hcomment
+		FROM HALL h, AREA a WHERE
+		h.ano=a.ano and h.ano=#{ano} 
+		and (hno in (select hno from meal where mealprice<![CDATA[ >= ]]>#{minprice}*10000 and mealprice<![CDATA[ <= ]]>#{maxprice}*10000))
+		and (hno in (select hno from halltype where wguest<![CDATA[ <= ]]>#{wguest}))
+		and (hlist like #{hall} or
+			hlist like #{convention} or
+			hlist like #{hotel} or
+			hlist like #{outside} or
+			hlist like #{traditional} or
+			hlist like #{religion} or
+			hlist like #{house}) 
+		and (mlist like #{korean} or
+			mlist like #{chinese} or
+			mlist like #{japanese} or
+			mlist like #{western} or
+			mlist like #{buffet}) 
+		
+	</select>
+</mapper> 

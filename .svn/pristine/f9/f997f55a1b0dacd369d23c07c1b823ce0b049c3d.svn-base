@@ -1,0 +1,217 @@
+
+html {overflow-y: scroll;}
+
+header {					/* 헤더 맨 위에 */
+	display:block;
+	width:100%;
+	background-color: #FFEFEE;
+}
+
+body {
+	display:block;
+	width:100%;
+}
+
+header div.header{
+	width:1200px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+header nav ul{				/* 헤더 로그인 메뉴 */
+	list-style-type:none;
+	text-align:right;
+	padding-top:10px;
+	margin-right:10px;
+}
+
+header nav ul li {			/* 헤더 로그인 메뉴 */
+	display:inline;
+}
+
+header nav ul li a {		/* 헤더 로그인 메뉴 */
+	text-decoration:none;
+	padding-left:5px;
+	padding-right:5px;
+	font-size:12px;
+	color:#666666;
+}
+
+header div.header section.h_section {	/* 헤더 메뉴 세션  */
+	display:block;
+	width:1200px;
+	margin-bottom:0px; /* 헤더 컨텐츠 사이 간격 */
+	height:200px;
+	margin-left:auto;
+	margin-right:auto;
+}
+ 
+header div.header section.h_section a.main {/* 헤더 메인 로고 */
+	display:block;
+	width:300px;
+	height:0px;
+	padding-top:0px;
+	margin-left:auto;
+	margin-right:auto;
+}
+div.hs_manu {
+	display:block;
+	width:100%;
+	height:130px;
+	background-color:WHITE;
+	
+}
+
+div.hs_manu span.hfu {
+	width:450px;
+	text-align:left;
+	padding-left:50px;
+	font-weight:bold;
+	font-size:50px;
+	padding-right:230px;
+}
+
+div.hs_manu a.hfua {
+	color:gray;
+}
+
+ul.hs_ul {					/* 헤더 메인 메뉴 */
+	display:block;
+	width:100%;
+	text-align:left;
+	list-style-type:none;
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:15px;
+	color:black;
+}
+
+ul.hs_ul li {				/* 헤더 메인 메뉴 */
+	display:inline;
+	font-size:20px;
+	padding-left:25px;
+	padding-right:25px;
+}
+
+ul.hs_ul li a { 
+	color:BLACK; 
+	text-decoration:none;
+}
+
+div.loginModal {			/* 로그인 모달 */
+	display: none;
+	position: fixed;
+	z-index: 1;
+	padding-top: 60px;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgb(0,0,0);
+	background-color: rgba(0,0,0,0.4);
+}
+
+div.loginModal_content {
+	background-color: #fefefe;
+	margin: 12% auto;
+	border: 1px solid #888;
+	width: 400px;
+	height: 245px;
+}
+
+div.lm_title {				/* 로그인 모달 타이틀 */
+	padding-top:10px;
+	padding-left:170px;
+}
+
+div.lm_close {				/* 로그인 모달 X 버튼 */
+	width: 30px;
+	float: right;
+	font-size:30px;
+	font-weight: bold;
+	color: black;
+}
+
+span.lClose:hover, span.lClose:focus {	/* 로그인 모달 X 버튼 */
+	color: red;
+	cursor: pointer;
+}
+
+div.lm_midContainer table tr td {/* 로그인 모달 ID/PW 입력란 */
+	padding:5px;
+	font-weight:bold;
+}
+
+div.lm_midContainer div.login { 	/* 로그인 모달 ID/PW 입력란 */
+	width:400px;
+	padding-bottom: 0px;
+	overflow: hidden;
+}
+
+div.login_input {
+	width: 250px;
+	float: left;
+}
+
+div.lm_midContainer table tr td.ftd {/* 로그인 모달 ID/PW 입력란 */
+	display:block;
+	padding-left:30px;
+}
+
+div.lm_midContainer div.login span.btnLogin {/* 로그인 모달 로그인 버튼 */
+	display:block;
+	width: 75px;
+	height: 75px;
+	border-radius:5px;
+	margin-right: 40px;
+	padding-top: 27px;
+	color:white;
+	font-weight:bold;
+	background-color:#181818;
+	text-align:center;
+	float: right;
+}
+
+div.okCancel {				/* 모든 페이지 확인(회원가입, 로그인 등), 취소 버튼(기본 설정) */
+	display:inline-block;
+	width:100%;
+	text-align:center;
+}
+
+a.joinIDPW {				/* 로그인 모달 회원가입, ID/PW 찾기 버튼 */
+	display:inline-block;
+	width:150px;
+	border-radius:5px;
+	padding:10px 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+	color:white;
+	font-weight:bold;
+	background-color:#181818;
+	text-align:center;
+}
+		
+
+												/****** End header ******/
+						
+												/****** footer ******/
+						
+footer {
+	display:block;
+	height:150px;
+	width:100%;
+}
+
+address {
+	padding-top:30px;
+	text-align:center;
+}
+
+section.f_section {
+	display:block;
+	width:100%;
+	height:150px;
+}
+
+						/****** End footer ******/

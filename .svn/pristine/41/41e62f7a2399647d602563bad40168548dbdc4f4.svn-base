@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<!-- namespace에는 interface가 들어감 -->
+    <mapper namespace="com.spring.dao.BookDAO">
+    	
+    	<!-- id : interface에서 실행할 메소드이름, resultType : return할 값 -->
+    	<select id="execSelect" resultType="com.spring.vo.BookVO">
+    		select rownum as rno, bno, hno, hname, member_id, to_char(wdate,'yyyy-mm-dd') wdate, to_char(bdate,'yyyy-mm-dd') bdate, book_check
+			from( select bno, book.hno, hname, member_id, wdate, bdate, book_check
+            from book, hall
+            where hall.hno = book.hno and book.hno = (select hno from hall where admin_id=#{admin_id})
+            order by bdate desc)
+    	</select>
+    	
+    	<select id="execAllSelect" resultType="com.spring.vo.BookVO">
+    		select rownum as rno, bno, hno, hname, member_id, to_char(wdate,'yyyy-mm-dd') wdate, to_char(bdate,'yyyy-mm-dd') bdate, book_check
+		      from (select bno, book.hno, hname, member_id, wdate, bdate, book_check
+		            from book, hall
+		            where hall.hno = book.hno
+		            order by bdate desc)
+    	</select>
+    	
+    	<select id="execContent" resultType="com.spring.vo.BookVO">
+    		select book.bno, book.member_id, member.member_name mname, member.member_phone mphone, 
+    				hall.hname, to_char(book.wdate,'yyyy-mm-dd') wdate, book.htype, book.hno
+			from book, hall, member
+			where hall.hno = book.hno and book.member_id = member.member_id and bno=#{bno}   
+    	</select>
+    	
+    	<!-- 예약상담 신청시 예약폼 입력 -->
+    	<insert id="execConsultInsert">
+    		insert into book
+    			values(seq_book_bno.nextval, #{hno}, #{member_id}, #{wdate}, sysdate, #{htype}, 1)
+    	</insert>
+    	
+    	<insert id="execBookInsert">
+    		insert into book_ok
+    			values(#{hno}, #{hname}, #{mname}, #{wdate}, #{wtime}, #{htype}, #{bno})
+    	</insert>
+    	
+    	<update id="execCheckUpdate">
+			update book set book_check = 2 where bno=#{bno}   	 	
+    	</update>
+    	
+    	<select id="execComplete" resultType="com.spring.vo.BookVO">
+    		select book.bno, book.hno, book.member_id, member.member_name mname, member.member_phone mphone,
+			        book_ok.hname, to_char(book.wdate,'yyyy-mm-dd') wdate, book.htype,
+			        book_ok.mname okmname, to_char(book_ok.wdate,'yyyy-mm-dd') okwdate, book_ok.wtime,
+			        book_ok.htype okhtype
+			from book, member, book_ok
+			where book_ok.bno = book.bno and book.member_id = member.member_id and book.bno=#{bno}
+    	</select>
+    	
+    	<delete id="execListDelete">
+    		delete from book where bno=#{bno}
+    	</delete>
+    	
+    	<delete id="execBookDelete">
+    		delete from book_ok where bno=#{bno}
+    	</delete>
+    	
+    	<insert id="execNewBookInsert">
+    		insert into book_ok
+    		values(#{hno}, #{hname}, #{mname}, #{wdate}, #{wtime}, #{htype}, 0)
+    	</insert>
+    	
+    	<update id="execBcountUpdate">
+    		update hall set bcount = bcount+1 where hno=#{hno}
+    	</update>
+    	
+    	<select id="execSelect2" resultType="com.spring.vo.BookokVO">
+    		select book_ok.mname, book_ok.hname, book_ok.wdate, book_ok.wtime, book_ok.htype
+			from book_ok, book
+			where member_id = #{member_id}
+			and book.bno = book_ok.bno
+    	</select>
+    	
+    	<select id="execSelect3" resultType="int">
+    		select count(book_ok.mname)
+    		from book_ok, book
+			where member_id = #{member_id}
+			and book.bno = book_ok.bno
+    	</select>
+    </mapper>

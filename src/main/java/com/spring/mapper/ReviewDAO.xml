@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.dao.ReviewDAO">
+    <select id = "execReviewSelect" resultType="com.spring.vo.ReviewVO">
+	 	select * from (select rownum as rowno, rno, hno, to_char(rdate,'yy/mm/dd') rdate, score, member_id, content 
+					  from (select rno, hno, rdate, score, member_id, content from review order by rdate desc) 
+						   where hno=#{hno} ) where rowno between 1 and 5
+	</select>
+	<select id = "execReviewListSelect" resultType="com.spring.vo.ReviewVO">
+	 	select rownum, rno, hno, to_char(rdate,'yy/mm/dd') rdate, score, member_id, content 
+		from (select rno, hno, rdate, score, member_id, content from review order by rdate desc) 
+		where hno=#{hno} 
+	</select>
+	<insert id="execReviewInsert">
+			insert into review
+			values(seq_review_rno.nextval, #{hno}, #{member_id}, #{content}, sysdate, #{score})
+	</insert>
+	<select id="execPageCount" resultType="int">
+			select count(*) from review	
+	</select>
+</mapper>

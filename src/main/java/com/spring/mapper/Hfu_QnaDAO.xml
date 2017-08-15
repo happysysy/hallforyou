@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="com.spring.dao.Hfu_QnaDAO">
+    
+	    <insert id="execInsert">
+		    insert into qna
+			values(seq_qna_qno.nextval, (select hno from hall where hname=#{hname}),#{member_id}, #{categories}, #{title},#{content},#{qna_pw}, sysdate,null)
+	    </insert> 
+	    <!-- qna list 출력(hno가 있는경우) -->
+	    <select id="execSelect" resultType="com.spring.vo.QnaVO">
+	    	select rownum as rno, qno, hno, member_id, categories, title, to_char(qdate,'yy-mm-dd') qdate
+			from (select qno, hno, member_id, categories, title, qdate from qna order by qdate desc)
+	    </select>
+	    <select id="execSelect2" resultType="com.spring.vo.QnaVO">
+	    	select rownum as rno, qno, hno, member_id, categories, title, to_char(qdate,'yy-mm-dd') qdate
+			from (select qno, hno, member_id, categories, title, qdate from qna order by qdate desc)
+			where member_id = #{member_id}
+	    </select>
+	    <!-- qna pw 출력 확인 -->
+	    <select id="execSelectPw" resultType="int">
+	    select count(qno) from qna where qna_pw=#{qna_pw} and qno=#{qno}
+	    </select>
+	    <!-- qna content 출력(hno 불러오기) -->
+	    <select id="execSelectHno" resultType="String">
+			select hno
+			from qna
+			where qno=#{qno}
+		</select>
+    	<!-- qna content 출력(hno가 없는경우) -->
+    	<select id="execContent" resultType="com.spring.vo.QnaVO">
+    		select rownum as rno, qno, hno, categories, title, member_id, to_char(qdate,'yyyy-mm-dd') qdate, content,qna_pw, answer
+			from qna where qno=#{qno}
+    	</select>
+    	<!-- qna content 출력(hno가 있는경우) -->
+    	<select id="execHnoContent" resultType="com.spring.vo.QnaVO">
+    		select rownum as rno, qno, qna.hno, hall.hname, categories, title, member_id, to_char(qdate,'yyyy-mm-dd') qdate, content,qna_pw, answer
+			from qna, hall where hall.hno=qna.hno and qno=#{qno}
+    	</select>
+    	<!-- qna 수정 -->
+    	<update id="execUpdate">
+ 			update qna set title=#{title}, content = #{content} where qno=#{qno}
+    	</update>
+    	<!-- qna delete -->
+    	<delete id="execDelete">
+    		delete from qna where qno=#{qno}
+    	</delete>
+    </mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="com.spring.dao.QnaDAO">
+    
+	    <!-- id : interface에서 실행할 메소드이름, resultType : return할 값 -->
+	    <!-- qna list -->
+	    <select id="execSelect" resultType="com.spring.vo.QnaVO">
+	    	select rownum as rno, qno, q.hno, member_id, categories, title, to_char(qdate,'yy-mm-dd') qdate, answer
+				 from (select qno, hno, member_id, categories, title, qdate, answer from qna order by qdate desc) q
+         	where q.hno = (select hno from admin where admin_id=#{admin_id})
+	    </select>
+	    
+	    <select id="execAllSelect" resultType="com.spring.vo.QnaVO">
+	    	select rownum as rno, qno, q.hno, member_id, categories, title, to_char(qdate,'yy-mm-dd') qdate, answer
+				 from (select qno, hno, member_id, categories, title, qdate, answer from qna order by qdate desc) q
+	    </select>
+	    
+    	<!-- qna content -->
+    	<select id="execContent" resultType="com.spring.vo.QnaVO">
+    		select rownum as rno, qno, hno, categories, title, member_id, to_char(qdate,'yyyy-mm-dd') qdate, content,answer
+			from qna where qno=#{qno}
+    	</select>
+    	
+    	<!-- qna answer update -->
+    	<update id="execAnswerUpdate">
+    		update qna
+    		set answer=#{answer}
+    		where qno=#{qno}
+    	</update>
+    	
+    	<!-- qna delete -->
+    	<delete id="execDelete">
+    		delete from qna where qno=#{qno}
+    	</delete>
+    </mapper>

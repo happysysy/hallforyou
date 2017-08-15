@@ -1,0 +1,27 @@
+@CHARSET "EUC-KR";
+
+@font-face {
+        font-family:'NanumBarunpenR';
+        src: url('../font/NanumBarunpenR.ttf');
+        font-weight: normal;
+        font-style: normal; 
+        }
+
+@font-face {
+        font-family:'NanumBarunGothicBold';
+        src: url('../font/NanumBarunGothicBold.ttf');
+        font-weight: normal;
+        font-style: normal; 
+        }
+        
+@font-face {
+        font-family:'NanumBarunGothic';
+        src: url('../font/NanumBarunGothic.ttf');
+        font-weight: normal;
+        font-style: normal; 
+        }        
+
+div.hs_manu { font-family: 'NanumBarunpenR'; word-spacing: 4px; letter-spacing: 1px;}
+div.content_besthall { font-family: 'NanumBarunpenR'; word-spacing: 4px; letter-spacing: 1px;}
+div.hs_manu span.hfu { font-family: 'NanumBarunGothicBold'; word-spacing: 4px; letter-spacing: 1px;}
+div.contents, div.content { font-family: 'NanumBarunGothic'; word-spacing: 4px; letter-spacing: 1px;}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    <mapper namespace="com.spring.dao.Hfu_HalldetailDAO">  	
+    	<!-- 홀 세부사항 불러오기 -->
+    	<select id="execContent" resultType="com.spring.vo.Hfu_HalldetailVO"> 
+    		select hno, address, tel, hname, hlist, mlist, mprice, guest, hcomment,pthumbnail, hmap, hurl
+    		from hall where hno=#{hno}
+    	</select>
+    	<!-- 예약정보 캘린더에서 불러오기 -->
+    	<select resultType="com.spring.vo.Hfu_HalldetailVO" id="execBookSelect"> 
+    		select hno, hname, mname, to_char(wdate, 'yyyy-mm-dd') as wdate, wtime, htype, bno 
+    		from book_ok where hno=#{hno}
+    	</select>
+    	<!-- 찜누르면 wishlist테이블에 저장됨 -->
+    	<insert id="execWishlistInsert">
+    		insert into wishlist
+    		values(#{hno},#{member_id})
+    	</insert>
+    	<select id="getWishlistCheck" resultType="int">
+			select count(member_id) from wishlist where hno=#{hno} and member_id=#{member_id}
+		</select>
+		<!-- image 부르기 -->
+		<select id="execImageSelect" resultType="com.spring.vo.ImageVO">
+			select pfname from images where hno=#{hno}
+		</select>
+    	<!-- qna 폼에서 불러올 웨딩홀리스트 -->
+    	<select id="execHname" resultType="com.spring.vo.Hfu_HalldetailVO"> 
+    		select hname from hall 
+    	</select>
+	</mapper>
+	

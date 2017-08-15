@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    <mapper namespace="com.spring.dao.MemberDAO">
+    
+    	<select id="execSelect" resultType="com.spring.vo.MemberVO">
+    		SELECT ROWNUM AS RNO, ROLE, ID, NAME, TO_CHAR(DT,'yyyy-mm-dd') DT, SUBMIT FROM
+				(SELECT ROLE, MEMBER_ID AS ID, MEMBER_NAME AS NAME, MDATE AS DT, ROLE AS SUBMIT FROM MEMBER
+				UNION
+				SELECT ROLE, ADMIN_ID, ADMIN_NAME, ADATE, ROLE FROM ADMIN 
+				ORDER BY DT DESC)
+				WHERE ID != 'mainadmin'
+    	</select>
+    	
+    	<select id="execMemberContent" resultType="com.spring.vo.MemberVO">
+    		SELECT ROLE, MEMBER_ID AS ID, MEMBER_PW AS PW, MEMBER_NAME AS NAME, EMAIL, MEMBER_PHONE AS PHONE, AREA.CITY AS CITY, AREA.GU AS GU, HTYPE, MENU, MPRICE_MIN, MPRICE_MAX, GUEST 
+			FROM MEMBER, AREA
+			WHERE AREA.ANO = MEMBER.ANO AND MEMBER_ID=#{id}
+    	</select>
+    	
+    	<select id="execNonAdminContent" resultType="com.spring.vo.MemberVO">
+    		select admin.role, admin.admin_id as id, admin.admin_pw as pw, admin.admin_name as name, admin.admin_phone as phone, admin.licensee_no, admin.cname
+			from admin
+			where admin.admin_id=#{id}
+    	</select>
+    	
+    	<select id="execAdminContent" resultType="com.spring.vo.MemberVO">
+    		select admin.role, admin.admin_id as id, admin.admin_pw as pw, admin.admin_name as name, admin.admin_phone as phone, admin.licensee_no, hall.hname as hname, admin.cname
+			from admin, hall
+			where admin.hno=hall.hno and admin.admin_id=#{id}
+    	</select>
+    	
+    	<update id="execSubmit">
+    		update admin
+    		set role = 3
+    		where admin_id=#{id}
+    	</update>
+    	
+    	<select id="execSelectHno" resultType="String">
+			select hno
+			from admin
+			where admin_id=#{id}
+		</select>
+		
+		<select id="execSelectHname" resultType="String">
+			select hname
+			from hall
+			where admin_id=#{id}
+		</select>
+    </mapper>

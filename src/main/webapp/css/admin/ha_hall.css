@@ -1,0 +1,44 @@
+	hr{
+		border: 2px dotted #D9D9D9;
+	}
+	h3.ishall{
+		text-align: center;
+	}
+	img.logo{
+		float: left;
+		margin-top: 10px;
+		min-width: 150px;
+	}
+	div.pack_hallTitle{
+		height: 40px;
+		text-align: center;
+	}
+	span.hallTitle{
+		margin-left: 50px;
+		float: left;
+		height: 100px;
+	}
+	div.button a span{
+		background-color: #888;
+		padding: 10px 15px 10px 15px;
+		border-radius: 10px;
+		color: white;
+		font-size: 12px;	
+	}
+	div.about_hall{
+		height: 600px;
+	}
+
+	span#thumbBtn{
+		cursor: pointer;
+	}
+	div.hexplain{
+		height: 400px;
+		width: 550px;
+		display: inline-block;
+		float:right;
+	}
+	div.hallname{
+		font-size: 20px;
+	}
+	

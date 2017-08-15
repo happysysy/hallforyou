@@ -1,0 +1,32 @@
+@charset "utf-8";
+/* CSS Document */
+
+body { 
+    padding-top: 30px;
+    text-align: center; 
+}
+.hide-cols {
+    display:none;
+}
+.align-right {
+    text-align:right;
+}
+.align-center {
+    text-align:center;
+}
+.sum-col {
+    background: red;
+}
+.btn-menu {color: #fff; background-color: #4caf50;border-color: #72a231;}
+.btn-menu1 {color: #fff; background-color: #2196f3;border-color: #00BCD4;}
+
+.app-contents {
+	width:100%; padding: 2% 15% 0 15%;
+}
+
+.modal-body-pad { padding: 30px;}
+.app-drop-zone {height:200px; display: inline;}
+
+.app-drop-zone .del-btn-pan {float:right;padding:12px;}
+
+.app-image {width:100px;}

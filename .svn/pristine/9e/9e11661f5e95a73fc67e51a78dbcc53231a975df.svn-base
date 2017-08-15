@@ -1,0 +1,61 @@
+.header {
+	height: 195px;
+	margin-bottom: 10px;
+	display: block;
+}
+.header div.menu{
+	background-color: white;
+}
+div.nav {
+	list-style-type: none;
+	height: 25px;
+}
+
+div.nav ul {
+	float: right;
+	min-width: 200px;
+	margin: 0;
+}
+
+div.nav ul li {
+	display: inline;
+}
+div.nav ul li a{
+	text-decoration: none;
+	color: black;
+}
+.header div.headerLogo {
+	width: 1200px;
+	height: 80px;
+	padding: 0px;
+	margin: auto;
+	text-align: center;
+}
+
+.headerLogo img {
+	height: 100%;
+}
+
+.header div.headerMenu {
+	width: 1200px;
+	height: 70px;
+	padding: 0px;
+	margin: auto;
+}
+
+.headerMenu ul {
+	list-style-type: none;
+	text-align: center;
+	padding: 0px;
+}
+
+.headerMenu ul li {
+	padding: 0 40px 0 40px;
+	display: inline;
+	font-size: 20px;
+}
+
+.headerMenu ul li a {
+	text-decoration: none;
+	color: black;
+}

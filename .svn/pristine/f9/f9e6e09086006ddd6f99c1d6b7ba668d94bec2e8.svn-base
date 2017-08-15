@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    <mapper namespace="com.spring.dao.Hfu_MemberDAO">
+    
+    	<insert id="execInsert">
+    		insert into member values(
+    		#{member_id},
+			#{member_pw},
+			#{member_name},
+			#{email},
+			#{member_phone},
+			#{gender},
+			(select ano from area where city =#{city} and gu=#{gu}),
+			#{mprice_min},
+			#{mprice_max},
+			#{menu},
+			#{htype},
+			#{guest},
+			sysdate,
+			1)
+    	</insert>
+    	
+    	<insert id="execAdminInsert">
+    		insert into admin values(
+    		#{admin_id},
+    		#{admin_pw},
+    		#{admin_name},
+    		#{admin_phone},
+    		#{licensee_no},
+    		null,
+    		#{cname},
+    		sysdate,
+    		2)
+    	</insert>
+    	
+    	<select id="getIdCheck" resultType="int"> 
+	    	select count(member_id) 
+	    	from member 
+	    	where member_id = #{id}
+    	</select>
+    	<select id="getIdCheck2" resultType="int"> 
+	    	select count(admin_id) 
+	    	from admin
+	    	where admin_id = #{id}
+    	</select>
+    	<select id="execSelect" resultType="int"> 
+	    	select count(member_id) 
+	    	from member 
+	    	where member_id = #{member_id}
+	    	and	  member_pw = #{member_pw}
+    	</select>
+    	<select id="getPassCheck" resultType="int"> 
+	    	select count(member_id) 
+	    	from member 
+	    	where member_id = #{param1} and member_pw = #{param2}
+    	</select>
+    	<select id="getPassCheck2" resultType="int"> 
+	    	select count(admin_id) 
+	    	from admin
+	    	where admin_id = #{param1} and admin_pw = #{param2}
+    	</select>
+    	
+    	
+		<select id="getJoinArea" resultType="com.spring.vo.AreaVO">
+			select distinct 
+			<if test='param1 == null and param2 == null'>	
+				city from (select avg(ano) ano, city from area group by city) where ano != 0 order by ano
+			</if>
+			<if test='param1 != null and param1.equals("city")'>
+				gu from 
+				(select ano, gu from area where city=#{param2})
+				order by gu		
+			</if>		
+		</select>	
+		<update id="execUpdate">
+			update member
+			set member_pw = #{member_pw},
+			ano = (select ano from area where city =#{city} and gu=#{gu}),
+			mprice_min = #{mprice_min},
+			mprice_max = #{mprice_max},
+			menu = #{menu},
+			htype = #{htype},
+			guest = #{guest}
+			where member_id = #{member_id}
+			and email = #{email}
+		</update>
+		<delete id="execQnaDelete">
+			delete from qna
+			where member_id = #{member_id}
+		</delete>
+		<delete id="execIdDelete">
+			delete from member
+			where member_id = #{member_id}
+			and member_pw = #{member_pw}
+		</delete>
+		
+		
+    	<select id ="execMemberWish" resultType="com.spring.vo.Hfu_MemberVO">
+    		select hall.hno hno, hall.thumbnail thumbnail, hall.hname hname
+			from hall, (select hno
+    					from wishlist
+    					where member_id = #{member_id}) wish
+			where hall.hno = wish.hno
+    	</select>
+    </mapper>

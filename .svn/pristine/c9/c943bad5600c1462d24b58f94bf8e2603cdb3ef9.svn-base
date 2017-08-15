@@ -1,0 +1,268 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>   
+<%@ page import="java.util.*" %>
+<%@ page import="com.spring.vo.SearchVO" %>
+<%@ page session = "true" %>      
+<%	String member_id = (String)session.getAttribute("member_id");%>
+<%
+	ArrayList<SearchVO> SearchList = (ArrayList<SearchVO>)request.getAttribute("SearchList");
+%>  
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>hall for you > hall search</title>
+	<link href="http://localhost:9000/hallforyou/css/common.css" rel="stylesheet"/> <!-- font -->
+	<link rel="stylesheet" href="http://localhost:9000/hallforyou/css/user/headerfooter.css">
+	<link rel="stylesheet" href="http://localhost:9000/hallforyou/css/user/hallforyou.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+ 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<style>
+	 	.contents{padding-top:20px;padding-bottom:10px;background:white;width:1200px;margin:auto;margin-top:20px;margin-bottom:20px;}
+ 		h3{display:inline-block;width:100px;text-align:center;}
+ 		label{display:inline-block;width:80px;font-size:13pt;text-align:center;}
+ 		
+ 		/* 검색 옵션 */ 
+ 		section.search{display:block;width:1100px; height:250px;margin:auto;border:2px dotted gray;}		
+		.search_list li {display:block;width:1000px;list-style-type:none;font-size:11pt;margin:10px;}
+		form.search_list{display:block;width:1100px;margin:auto;padding:20px 5px 15px 5px;}
+		.selectpicker{display:inline-block;width:100px;height:25px;}
+		#minprice, #maxprice, #wguest{width:80px;padding:3px 5px;}
+		.checkbox{display:inline-block;}
+		span.search, span.cancel {
+		display:inline-block;width:80px;
+		background:gray;padding:5px 8px;color:white;
+		font-weight:bold;border-radius:4px;
+		text-align:center;}
+		span:hover{color:black;text-decoration:none;}
+		.button {display:block;width:1150px;text-align:right;margin-top:20px;}  
+		
+		/* 홀 리스트 */ 
+		.list{display:block;width:1200px;margin:auto;padding-top:40px;}
+		.info_searchlist{display:block;width:97%;height:250px;border-bottom:2px dotted gray;padding-top:10px;padding-bottom:30px;
+		}
+		.info_searchlist:hover{background-color:#ffe4e1;}
+		.hall_img{float:left;margin:15px 20px 15px 10px;}
+		.hall_img:hover{opacity:0.4;border:2px solid #E8CEC2;}
+		.name_info{font-size:14pt;font-weight:bold;}
+		li p{margin-top:5px;display:block;}
+ 	</style>
+ 	<script>
+ 	$.ajax({
+		url : 'http://localhost:9000/hallforyou/area.do',			
+		dataType : "json",
+		success : function(data) {				
+			if(data.length !=0){
+				for(var i=0; i<data.length;i++){						
+					str = "<option value=" + data[i].city +">"
+						+ data[i].city
+						+ "</option>";							
+					$("#city").append(str);
+				}
+			
+			}
+		}
+	});
+ 	$(document).ready(function(){
+ 		$("#halltype_all").click(function(){
+				if($("#halltype_all").is(":checked")){
+					$("input[name='checkhlist']").prop("checked", true);				
+				}else{
+					$("input[name='checkhlist']").prop("checked", false);
+				}
+			});
+ 		$("#menu_all").click(function(){
+			if($("#menu_all").is(":checked")){
+				$("input[name='checkmlist']").prop("checked", true);				
+			}else{
+				$("input[name='checkmlist']").prop("checked", false);
+			}
+		});
+ 
+ 		$("#search").click(function(){
+ 			if($("#city").val()=='시도'){
+ 				alert("지역을 선택해주세요");
+ 				return false;
+ 			}else if($("#minprice").val()==""){
+				alert("최소가격을 입력해주세요");
+				return false;
+			}else if($("#maxprice").val()==""){
+				alert("최대가격을 입력해주세요");
+				return false;
+			}else if($("#wguest").val()==""){
+				alert("보증인원을 입력해주세요");
+				return false;
+			}else if($("input[name='checkhlist']").is(":checked")==false){
+				alert("홀타입을 선택해주세요");
+				return false;
+			}else if($("input[name='checkmlist']").is(":checked")==false){
+				alert("메뉴를 선택해주세요");
+				return false;
+			}
+			
+ 			var params = $("#SearchForm").serialize();
+
+			$.ajax({
+				url : 'http://localhost:9000/hallforyou/user/hfu_search_check.do',
+				type : 'POST',/*한글깨짐 방지*/
+				data : params,
+				dataType : "json",   					
+				success : function(data) {  
+					if(data.length != 0){
+						$("#hinfo").empty();
+						for(var i=0; i<data.length;i++){
+							str = "<li class='info_searchlist'>" 
+								+ "<a href='http://localhost:9000/hallforyou/user/hfu_halldetail.do?hno="+data[i].hno+"'>"
+								+ "<img class='hall_img' src='http://172.16.13.3:9000/hallforyou/upload/"+data[i].pthumbnail+"' width='240' height='200' >"
+								+ "</a>"
+								+ "<p class='local_info'>"+data[i].city+" > "+data[i].gu+" </p>"
+								+ "<p class='name_info'> " + data[i].hname + "</p>"
+								+ "<p class='type_info'>홀타입 |"+data[i].hlist+"</p>"
+								+ "<p class='menu_info'>메뉴 |"+data[i].mlist+"</p>"
+								+ "<p>"+data[i].hcomment+"</p>"
+							    + "</li>"						
+							
+							$("#hinfo").append(str);	
+						}//end of for
+						
+					}else
+						alert("검색 결과가 없습니다. 다시 검색해주세요");//end of if						
+				},error: function (data){
+					alert("검색 에러. 검색 형태에 맞게 다시 검색해주세요");
+				}//end of success					
+			});//end of ajax  	
+ 	
+ 		});
+ 		
+ 		$("#cancel").click(function(){
+ 				$("#city").val(1);
+ 				$("#gu").val(1);
+ 				$("#minprice").val("");
+ 				$("#maxprice").val("");
+ 				$("#wguest").val("");
+				$("input[name='checkhlist']").prop("checked",false);
+				$("input[name='checkmlist']").prop("checked",false);
+		});
+
+		$("#city").change(function(){
+			var id = $(this).attr("id");
+				option = "";
+				if(id=="city"){
+					option = $("#city option:selected").val();
+				}if(id=="gu"){
+					option = $("#gu option:selected").val();
+				}
+				
+  				$.ajax({
+  					url : 'http://localhost:9000/hallforyou/area.do',
+  					type : 'POST',/*한글깨짐 방지*/
+  					data : 'id='+id+'&option='+option, /*'name = '+value*/
+  					dataType : "json",   					
+  					success : function(data) {  	
+  						$("#gu option").remove();
+  						if(data.length !=0){  						
+  							for(var i=0; i<data.length;i++){ 
+  								if(id=="city"){
+	  								str = "<option value=" + data[i].gu +">"
+	  									+ data[i].gu
+	  									+ "</option>";		  								
+	  								$("#gu").append(str);  								 									
+  								}
+  							}  						
+  						}
+  					}//end of success					
+  				});//end of ajax  							
+			});
+ 		
+ 	})
+ 	</script>
+</head>
+<body>
+	<!-- header -->
+	 <c:choose>
+ 		<c:when test="${empty sessionScope.member_id}">
+ 			<c:import url="http://localhost:9000/hallforyou/user/hfu_header.do" />
+ 		</c:when>
+ 		<c:when test="${not empty sessionScope.member_id}">
+ 			<c:import url="http://localhost:9000/hallforyou/user/hfu_sheader.do" />
+ 		</c:when>
+ 	</c:choose>                                                        
+	<!-- <content> -->
+	<div class="contents">
+		<!-- 검색 옵션 -->
+		<section class ="search">
+				<form class="search_list" id ="SearchForm" name="SearchForm" action="hfu_search_check.do" method="post">
+				<ul>
+				<li>
+					<label>지 역</label>&nbsp;&nbsp;&nbsp;
+					<select class="selectpicker" name="city" id="city">
+					<option value="시도">시 / 도</option>
+					</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				    <select class="selectpicker" name="gu" id="gu">
+					<option >군 / 구</option>
+					</select>			
+				</li>
+				<li>
+					<label>식 대</label>&nbsp;&nbsp;&nbsp;
+					<input type="text" id="minprice" name="minprice"> 만원~
+					<input type="text" id="maxprice" name="maxprice"> 만원
+				</li>
+				<li>
+					<label>보증인원</label>&nbsp;&nbsp;&nbsp;
+					<input type="text" id="wguest" name="wguest"> 명
+				</li>
+				<li>
+					<label>홀타입</label>&nbsp;&nbsp;&nbsp;
+					<input type="checkbox" id="halltype_all">전체&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="checkbox" id="halltype" name="checkhlist" value="일반홀">일반홀&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="checkbox" id="halltype" name="checkhlist" value="컨벤션">컨벤션&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="checkbox" id="halltype" name="checkhlist" value="호텔">호텔&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="checkbox" id="halltype" name="checkhlist" value="야외">야외&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="checkbox" id="halltype" name="checkhlist" value="전통">전통&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="checkbox" id="halltype" name="checkhlist" value="종교">종교&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="checkbox" id="halltype" name="checkhlist" value="하우스">하우스
+				</li>
+				<li>
+					<label>메 뉴</label>&nbsp;&nbsp;&nbsp;
+					
+					<input type="checkbox" id="menu_all" >전체&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="checkbox" id="menu" name="checkmlist" value="한식">한식&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="checkbox" id="menu" name="checkmlist" value="중식">중식&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="checkbox" id="menu" name="checkmlist" value="일식">일식&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="checkbox" id="menu" name="checkmlist" value="양식">양식&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="checkbox" id="menu"name="checkmlist" value="뷔페">뷔페
+				</li>
+			</ul>
+			</form>
+		</section>
+		<div class="button">
+						<span class="search" id="search">검  색</span>&nbsp;&nbsp;&nbsp;&nbsp;
+						<span class="cancel" id="cancel">초기화</span>
+		</div>
+		<!-- 홀 리스트 -->	     
+		<section class="list">
+			<div class="in_list">
+			<h3>홀 정보</h3>				
+				<ul id="hinfo">	
+				<%for(SearchVO vo: SearchList){ %>								
+					<li class="info_searchlist">
+						<a href="http://localhost:9000/hallforyou/user/hfu_halldetail.do?hno=<%=vo.getHno() %>">
+						<img class="hall_img" src="http://172.16.13.3:9000/hallforyou/upload/<%=vo.getPthumbnail() %>" width="240" height="200" >
+						</a>
+						<p class="local_info"><%=vo.getCity() %> > <%=vo.getGu() %></p>
+						<p class="name_info"><%=vo.getHname() %></p>
+						<p class="type_info">홀타입 | <%=vo.getHlist() %></p>
+						<p class="menu_info">메뉴 | <%=vo.getMlist() %></p>
+						<p><%=vo.getHcomment() %></p>
+					</li>				
+				<%} %>
+				</ul>
+			</div>
+		</section>
+	</div>
+	<!-- footer -->
+	<c:import url="http://localhost:9000/hallforyou/user/hfu_footer.do" />
+</body>
+</html>

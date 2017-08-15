@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.dao.HallDAO">
+	<select id ="execSelectByMemberid" resultType="String">
+		SELECT hno FROM hall WHERE admin_id=#{admin_id}
+	</select>
+	 <insert id="execInsert">
+		INSERT INTO hall
+		VALUES(seq_hall_hno.nextval, #{admin_id},#{hname}, #{ano}, #{address}, #{hlist}, #{mlist}, #{mprice}, #{tel}, #{guest}, #{thumbnail}, #{hcomment}, null, null, #{pthumbnail}, #{hurl})
+	 </insert>
+	 
+	 <update id ="execGethall">
+	 	UPDATE admin SET hno=#{hno}
+	 	WHERE admin_id=#{admin_id}
+	 </update>
+	 <update id ="execDeleteHall">
+	 	UPDATE admin SET hno=null
+	 	WHERE admin_id = #{admin_id}
+	 </update>
+	 <update id ="execUpdateAdminByHno">
+	 	UPDATE admin SET hno = null WHERE hno=#{hno}
+	 </update>
+	 
+	 <select id = "execSelectByNo" resultType="com.spring.vo.HallVO">
+	 	SELECT * FROM hall WHERE hno=#{hno}
+	 </select>
+	 
+	 <update id ="execUpdate">
+	 	UPDATE hall SET hname=#{hname}, thumbnail=#{thumbnail},pthumbnail=#{pthumbnail}, address=#{address}, hlist=#{hlist}, mlist=#{mlist}, mprice=#{mprice}, tel=#{tel}, guest=#{guest}, hcomment=#{hcomment}, hurl=#{hurl}
+	 	WHERE hno=#{hno}
+	 </update>
+	 <delete id="execDelete">
+	 	DELETE FROM hall
+	 	WHERE hno=#{hno}
+	 </delete>
+	 
+	 <!-- 지도 좌표 추가 -->
+	 <update id="execMapUpdate">
+	 	update hall set hmap=#{hmap} where hno=#{hno}
+	 </update>
+	 
+	 <!-- 홀이미지 삽입 -->
+	<insert id ="execInsertImage">
+		INSERT INTO images VALUES(seq_images_fno.NEXTVAL, #{hno}, #{fname}, #{pfname})
+	</insert>
+	<select id ="execSelectImage" resultType="com.spring.vo.ImageVO">
+		SELECT * FROM images WHERE hno = #{hno} ORDER BY fno DESC
+	</select>
+	<delete id ="execDeleteImage" >
+		DELETE FROM images WHERE fno = #{fno}
+	</delete>
+	<delete id ="execDeleteImageByHno">
+		DELETE FROM images WHERE hno = #{hno}
+	</delete>
+	
+	<select id ="execPageCount" resultType="int">
+		select count(*) from hall
+	</select>
+	<select id = "execSelect" resultType="com.spring.vo.HallVO">
+	 	SELECT * FROM (SELECT rownum as rno, hno, pthumbnail, hname, ano, address, hmap FROM (SELECT hno, pthumbnail, hname, ano, address,hmap FROM hall ORDER BY hno DESC))  WHERE rno BETWEEN #{param1} AND #{param2}
+	 </select>
+	 
+	<select id = "execbhall" resultType="com.spring.vo.HallVO">
+	 	SELECT * FROM hall
+	 	order by bcount
+	 </select>
+</mapper>

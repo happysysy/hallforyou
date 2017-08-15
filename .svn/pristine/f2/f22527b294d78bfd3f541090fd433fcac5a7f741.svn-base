@@ -1,0 +1,53 @@
+	body{
+		width: 100%;
+		margin: auto;
+		font-family: 'verdana';
+		background-color: #E1E1E1;
+	}
+	.header{
+		height: 150px;
+		margin-bottom:10px;
+		display: block;
+		background-color:white;
+	}
+	.header div.headerLogo{
+		width: 1200px;
+		height: 80px;
+		padding: 0px;
+		margin:auto;
+	}
+	.headerLogo img{
+		height:100%;
+	}
+	.header div.headerMenu{
+		width:1200px;
+		height: 70px;
+		padding: 0px;
+		margin: auto;
+	}
+	.headerMenu ul{
+		list-style-type: none;
+		text-align: center;
+		padding: 0px;
+	}
+	.headerMenu ul li{
+		padding: 0 50px 0 50px;
+		display: inline;
+		font-size: 20px;
+	}
+	.headerMenu ul li a{
+		text-decoration: none;
+		color: black;
+	}
+	.content{
+		width: 1200px;
+		min-height: 700px;
+		display:block;
+		margin-bottom: 10px;
+		background-color: white;
+		padding: 10px;
+		margin: 10px auto 10px;
+	}
+	.footer{
+		height: 100px;
+	}

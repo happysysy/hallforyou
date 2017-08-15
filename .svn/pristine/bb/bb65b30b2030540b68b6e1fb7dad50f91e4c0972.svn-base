@@ -1,0 +1,48 @@
+
+						/****** content ******/
+body {
+	display:block;
+	width:100%;
+}
+
+
+h3.bottom_bar {				/* content 상단 바  */
+	display:block;
+	width:100%;
+	margin-left:20px;
+}
+				
+div.content {				/* content 영역 설정 */
+	display:block;
+	width:1200px;
+	margin-right:auto;
+	margin-left:auto;
+	background-color:white;
+	
+} 
+
+div.okCancel {				/* 모든 페이지 확인(회원가입, 로그인 등), 취소 버튼(기본 설정) */
+	display:inline-block;
+	width:100%;
+	text-align:center;
+}
+
+/****************************** 메인 ***********************/
+
+div.item a img {
+	 margin-left:auto;
+	 margin-right:auto;
+}
+
+
+
+/****************************** 이벤트 ***********************/
+
+ul.evt_ul {					/* 이벤트 페이지 */
+	width:100%;
+	list-style-type:none;
+}
+
+
+
+						/****** End content ******/

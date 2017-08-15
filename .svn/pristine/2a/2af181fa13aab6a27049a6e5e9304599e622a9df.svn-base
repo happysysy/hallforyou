@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    <mapper namespace="com.spring.dao.MyhallDAO">
+    	<select id="execMemberContent" resultType="com.spring.vo.MemberVO">
+    		SELECT ROLE, MEMBER_ID AS ID, MEMBER_PW AS PW, MEMBER_NAME AS NAME, EMAIL, MEMBER_PHONE AS PHONE, AREA.CITY AS CITY, AREA.GU AS GU, HTYPE, MENU, MPRICE_MIN, MPRICE_MAX, GUEST 
+			FROM MEMBER, AREA
+			WHERE AREA.ANO = MEMBER.ANO AND MEMBER_ID=#{member_id}
+    	</select>
+    	<select id ="execSelectHall" resultType="com.spring.vo.HallVO">
+		SELECT a.city, a.gu, h.hno,h.hname,h.hlist,h.mlist,h.mprice,h.guest,h.pthumbnail, h.hcomment
+		FROM HALL h, AREA a WHERE
+		h.ano=a.ano and h.ano=#{ano} 
+		and (hno in (select hno from meal where mealprice<![CDATA[ >= ]]>#{mprice_min} and mealprice<![CDATA[ <= ]]>#{mprice_max}))
+		and (hno in (select hno from halltype where wguest<![CDATA[ <= ]]>#{guest}))
+		and hlist like '%'||#{htype}||'%'
+		and mlist like '%'||#{menu}||'%'		
+	</select>
+    </mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.dao.EventDAO">
+ <select id="execSelect" resultType="com.spring.vo.EventVO">
+SELECT * FROM (SELECT ROWNUM as rno, eno, hno,hname, url, pimage FROM 
+(SELECT distinct eno,e.hno as hno,url,pimage, h.hname as hname 
+FROM event e, hall h WHERE e.hno=h.hno ORDER BY eno DESC)) WHERE rno BETWEEN #{param1} AND #{param2}
+</select>
+<select id ="execSelectByNo" resultType="com.spring.vo.EventVO">
+	SELECT * FROM event WHERE eno = #{eno}
+</select>
+ <insert id = "execInsert">
+ 	INSERT INTO event 
+ 	VALUES (seq_event_eno.NEXTVAL,#{hno}, #{image}, #{url}, #{pimage})
+ </insert>
+ <update id ="execUpdate">
+ 	UPDATE event
+ 	SET hno=#{hno}, image=#{image}, url=#{url}, pimage=#{pimage}
+ 	WHERE eno=#{eno}
+ </update>
+ <update id ="execUpdateFilenull">
+ 	UPDATE event SET hno=#{hno}, url=#{url} WHERE eno=#{eno}
+ </update>
+ <delete id ="execDelete">
+ 	DELETE FROM event WHERE eno = #{eno}
+ </delete>
+ 
+<select id="getEventList" resultType="com.spring.vo.EventVO">
+		SELECT pimage, url	
+		FROM event
+</select>
+<select id ="execPageCount" resultType="int">
+	SELECT count(*) FROM event
+</select>
+</mapper>

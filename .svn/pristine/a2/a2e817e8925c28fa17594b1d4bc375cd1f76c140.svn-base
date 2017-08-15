@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+    <mapper namespace="com.spring.dao.LoginDAO">
+    <select resultType="int" id="execSelect"> 
+    	select count(member_id) 
+    	from member 
+    	where member_id = #{id} and member_pw = #{pass}
+    </select>
+    
+    <select resultType="int" id="execSelect2"> 
+		select count(admin_id)
+		from admin
+		where admin_id = #{id}	and admin_pw = #{pass} and role = 3
+    </select>
+	
+	<select id="execSelectHno" resultType="com.spring.vo.MemberVO">
+		select admin_id as id, hno
+		from admin
+		where admin_id=#{id}
+	</select>
+	<select resultType="com.spring.vo.Hfu_MemberVO" id="execInfo"> 
+    	select member_name, email, member_phone, gender 
+    	from member 
+    	where member_id = #{id} and member_pw = #{pass}
+    </select>
+    
+    </mapper>

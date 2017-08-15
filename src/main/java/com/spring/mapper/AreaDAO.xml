@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.spring.dao.AreaDAO">
+	<select id="execSelectCity" resultType="String">
+		SELECT DISTINCT city FROM area
+	</select>
+	<select id="execSelectGu" resultType="String">
+		SELECT gu FROM area WHERE city=#{city}
+	</select>
+	<select id="execSelectAno" resultType="int">
+		SELECT ano FROM area WHERE city=#{city} AND gu=#{gu}
+	</select>
+	<select id= "execSelectByAno" resultType="com.spring.vo.AreaVO">
+		SELECT * FROM area WHERE ano=#{ano}
+	</select>
+	
+	<select id="getAddressCall" resultType="com.spring.vo.AreaVO">
+		select 
+		<if test='param1 == null and param2 == null'>
+			 distinct city from (select ano, city from area order by ano)
+		</if>
+		<if test='param1 != null and param1.equals("city")'>
+			gu from area
+			where city=#{param2}
+		</if>
+
+		
+	</select>
+</mapper>

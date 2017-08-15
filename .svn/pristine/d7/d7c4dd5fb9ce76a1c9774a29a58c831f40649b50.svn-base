@@ -1,0 +1,19 @@
+	body.hall{
+		width: 100%;
+		margin: auto;
+		font-family: 'verdana';
+		background-color: #E1E1E1;
+	}
+	
+	.content{
+		width: 1200px;
+		min-height: 700px;
+		display:block;
+		margin-bottom: 10px;
+		background-color: white;
+		padding: 10px;
+		margin: 30px auto 10px;
+	}
+	.footer{
+		height: 100px;
+	}

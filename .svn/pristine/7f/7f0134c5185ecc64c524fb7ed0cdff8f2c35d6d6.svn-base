@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.spring.dao.EstimateDAO">
+	 <insert id="execInsertSelection">
+		INSERT INTO selection 
+		VALUES(selection_sno_seq.NEXTVAL,#{rannum},#{sname}, #{sprice},#{sref}, #{scontent})
+	</insert>
+	<insert id = "execInsertMeal"> 
+		INSERT INTO meal
+		VALUES (#{rannum}, #{mealtype}, #{mealprice}, #{mealcontent}, seq_meal_mno.NEXTVAL, #{hno})
+	</insert>
+		<insert id = "execInsertDrink">
+		INSERT INTO drink
+		VALUES (#{rannum}, #{drink}, #{drinkprice}, seq_drink_dno.NEXTVAL)
+	</insert>
+	
+
+	<select id ="execSelectSelection" resultType="com.spring.vo.EstimateVO">
+		SELECT * FROM selection
+		WHERE typeno=#{rannum} order by sname
+	</select>
+	<select id ="execSelectMeal" resultType="com.spring.vo.EstimateVO">
+		SELECT * FROM meal
+		WHERE typeno=#{rannum} order by mealtype
+	</select>
+		<select id ="execSelectDrink" resultType="com.spring.vo.EstimateVO">
+		SELECT * FROM drink
+		WHERE typeno=#{rannum} order by drink
+	</select>
+	
+	<!-- update화면에서 필요한 쿼리문시작 -->
+	<select id ="execSelectHtypeByTypeno" resultType="com.spring.vo.EstimateVO">
+		SELECT * FROM halltype WHERE typeno=#{typeno} order by typename
+	</select>	
+	<select id ="execSelectSelectionByTypeno" resultType="com.spring.vo.EstimateVO">
+		SELECT * FROM selection WHERE typeno=#{typeno} order by sname
+	</select>
+	<select id ="execSelectMealByTypeno" resultType="com.spring.vo.EstimateVO">
+		SELECT * FROM meal WHERE typeno=#{typeno} order by mealtype
+	</select>
+	<select id ="execSelectDrinkByTypeno" resultType="com.spring.vo.EstimateVO">
+		SELECT * FROM drink WHERE typeno=#{typeno} order by drink
+	</select>
+	<!-- update화면에서 필요한 쿼리문종료 -->
+	
+	
+	<insert id="execInsertHtype">
+		INSERT INTO halltype
+		VALUES (seq_halltype_htno.NEXTVAL, #{hno},#{typename}, #{wtype}, #{wguest}, #{tinterval})
+	</insert>
+	<select id ="execSelectTypeno" resultType="int">
+		SELECT typeno FROM halltype
+		WHERE typename=#{typename} and hno=#{hno} order by typename
+	</select>
+	<update id ="execUpdateSelectionTypeno">
+		UPDATE selection
+		SET typeno=#{typeno}
+		WHERE typeno=#{rannum}
+	</update>
+	<update id ="execUpdateMealTypeno">
+		UPDATE MEAL
+		SET typeno=#{typeno}
+		WHERE typeno=#{rannum}
+	</update>
+	<update id ="execUpdateDrinkTypeno">
+		UPDATE drink
+		SET typeno=#{typeno}
+		WHERE typeno=#{rannum}
+	</update>
+	
+	<select id ="execSelectHtype" resultType="com.spring.vo.EstimateVO">
+		SELECT * FROM halltype WHERE hno = #{hno}
+	</select>
+
+	<!-- estimate update시에 필요한 insert작업과 delete작업, update작업-->
+	<insert id ="execUpdateInsertSelection">
+		INSERT INTO selection 
+		VALUES (selection_sno_seq.NEXTVAL, #{typeno}, #{sname}, #{sprice}, #{sref}, #{scontent})
+	</insert>
+	<insert id ="execUpdateInsertMeal">
+		INSERT INTO meal
+		VALUES (#{typeno}, #{mealtype}, #{mealprice}, #{mealcontent}, seq_meal_mno.NEXTVAL, #{hno})
+	</insert>
+	<insert id ="execUpdateInsertDrink">
+		INSERT INTO drink
+		VALUES (#{typeno}, #{drink}, #{drinkprice}, seq_drink_dno.NEXTVAL)
+	</insert>
+	<update id ="execUpdateHtype">
+		UPDATE halltype SET typename=#{typename}, wtype=#{wtype}, 
+		wguest=#{wguest}, tinterval=#{tinterval}
+		WHERE typeno=#{typeno}
+	</update>
+	<delete id="execUpdateDeleteSelection">
+		DELETE FROM selection WHERE sno=#{sno}
+	</delete>
+	<delete id="execUpdateDeleteMeal">
+		DELETE FROM meal WHERE mno=#{mno}
+	</delete>
+	<delete id="execUpdateDeleteDrink">
+		DELETE FROM drink WHERE dno=#{dno}
+	</delete>
+	<delete id ="execDeleteHtype">
+		DELETE FROM halltype WHERE typeno=#{typeno}
+	</delete>
+	
+	<!-- 상담 예약 신청시 필요한 typename 불러오기-->
+	<select id="execHalltypeContent" resultType="com.spring.vo.EstimateVO">
+		select typename from halltype where hno=#{hno}
+	</select>
+ </mapper>
